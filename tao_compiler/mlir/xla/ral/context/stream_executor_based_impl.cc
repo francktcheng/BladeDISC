@@ -1366,35 +1366,35 @@ Status RunCudnnConvolution<int8_t>(
 
   Status status = Status::OK();
 
-  switch (kind) {
-    case ConvolutionKind::FORWARD:
-
-#if (TF_MAJOR_VERSION == 2 && TF_MINOR_VERSION > 6) || TF_MAJOR_VERSION > 2
-      stream->FusedConvolveWithAlgorithm(
-          input_descriptor, input_buf, params.scale, filter_descriptor,
-          filter_buf, convolution_descriptor, output_buf, (float)0.0,
-          params.bias_descriptor, DeviceMemory<int32_t>(operand_buffers[2]),
-          se::dnn::ActivationMode::kNone, output_descriptor, &output_buf,
-          scratch_allocator, algorithm, profile_result);
-#elif TF_MAJOR_VERSION > 1
-      stream->FusedConvolveWithAlgorithm(
-          input_descriptor, input_buf, params.scale, filter_descriptor,
-          filter_buf, convolution_descriptor, output_buf, (float)0.0,
-          params.bias_descriptor, DeviceMemory<float>(operand_buffers[2]),
-          se::dnn::ActivationMode::kNone, output_descriptor, &output_buf,
-          scratch_allocator, algorithm, profile_result);
-#else
-      stream->ThenFusedConvolveWithAlgorithm(
-          input_descriptor, input_buf, params.scale, filter_descriptor,
-          filter_buf, convolution_descriptor, output_buf, (float)0.0,
-          params.bias_descriptor, DeviceMemory<int32_t>(operand_buffers[2]),
-          se::dnn::ActivationMode::kNone, output_descriptor, &output_buf,
-          scratch_allocator, algorithm, profile_result);
-#endif
-      break;
-    default:
-      return errors::Internal("Not known CudnnConvKind");
-  }
+//  switch (kind) {
+//    case ConvolutionKind::FORWARD:
+//
+//#if (TF_MAJOR_VERSION == 2 && TF_MINOR_VERSION > 6) || TF_MAJOR_VERSION > 2
+//      stream->FusedConvolveWithAlgorithm(
+//          input_descriptor, input_buf, params.scale, filter_descriptor,
+//          filter_buf, convolution_descriptor, output_buf, (float)0.0,
+//          params.bias_descriptor, DeviceMemory<int32_t>(operand_buffers[2]),
+//          se::dnn::ActivationMode::kNone, output_descriptor, &output_buf,
+//          scratch_allocator, algorithm, profile_result);
+//#elif TF_MAJOR_VERSION > 1
+//      stream->FusedConvolveWithAlgorithm(
+//          input_descriptor, input_buf, params.scale, filter_descriptor,
+//          filter_buf, convolution_descriptor, output_buf, (float)0.0,
+//          params.bias_descriptor, DeviceMemory<float>(operand_buffers[2]),
+//          se::dnn::ActivationMode::kNone, output_descriptor, &output_buf,
+//          scratch_allocator, algorithm, profile_result);
+//#else
+//      stream->ThenFusedConvolveWithAlgorithm(
+//          input_descriptor, input_buf, params.scale, filter_descriptor,
+//          filter_buf, convolution_descriptor, output_buf, (float)0.0,
+//          params.bias_descriptor, DeviceMemory<int32_t>(operand_buffers[2]),
+//          se::dnn::ActivationMode::kNone, output_descriptor, &output_buf,
+//          scratch_allocator, algorithm, profile_result);
+//#endif
+//      break;
+//    default:
+//      return errors::Internal("Not known CudnnConvKind");
+//  }
 
   if (!status.ok()) return status;
   if (!stream->ok()) {
